@@ -67,5 +67,5 @@ Route::prefix('/artist')->middleware(['checkStatus', 'artistAuth'])->group(funct
 
 
 Route::get('/', function () {
-    return view('welcom');
+    return view('welcome');
 });
