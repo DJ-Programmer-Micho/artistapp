@@ -6,7 +6,7 @@ use App\Models\Plan;
 use App\Models\User;
 use Livewire\Component;
  
-class loginLivewire extends Component
+class LoginLivewire extends Component
 {
     // function mount()
     // {
