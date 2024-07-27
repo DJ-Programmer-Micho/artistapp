@@ -212,7 +212,7 @@ class DetailLivewire extends Component
         } catch (\Exception $e) {
             $this->dispatch('alert', ['type' => 'error',  'message' => __('Something Went Wrong.')]);
 
-            // Log::info('progress record:', ['record' => $e]);
+            Log::info('progress record:', ['record' => $e]);
         } // END FUNTION OF (COMFIRMATION DATA)
     }
 
