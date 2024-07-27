@@ -76,6 +76,7 @@ class DetailLivewire extends Component
             // Read the CSV file contents
             $fileContents = file($csvFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             if ($fileContents === false) {
+                Log::info('Failed to read the CSV file.');
                 throw new \Exception('Failed to read the CSV file.');
             }
     
@@ -120,6 +121,7 @@ class DetailLivewire extends Component
                     ];
                 }
             }
+            Log::info('Processed records before dispatch:', ['records' => $records]);
 
             // Dispatch job for each chunk
             if (!empty($records)) {
