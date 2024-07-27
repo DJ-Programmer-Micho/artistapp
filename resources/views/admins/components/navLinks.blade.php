@@ -1,4 +1,22 @@
 <div id="wrapper">
+    <style>
+        .content-bg-met{
+            /* background-color: #293145!important; */
+            /* border: 1px solid #cc0022; */
+        }
+        .sidebar .nav-item .nav-link {
+            padding: 0.5rem 1rem!important;
+        }
+        .nav-item lord-icon{
+            vertical-align: middle !important;
+        }
+        .nav-item span{
+            vertical-align: middle !important;
+        }    
+        /* .minicolors-sprite {
+  background-image: url(@php echo asset('assets/dashboard/css/jquery.minicolors.css') @endphp);
+} */
+    </style>
     <!-- Sidebar -->
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-yt-dark sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -52,20 +70,60 @@
         <hr class="sidebar-divider my-0" />
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item ">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.dashboard')}}">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/')) ? '' : 'active'}}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                aria-expanded="true" aria-controls="collapsePages">
                 <lord-icon
-                    src="https://cdn.lordicon.com/abwrkdvl.json"
-                    trigger="loop"
-                    delay="1000"
-                    state="loop-all"
-                    colors="primary:#ffffff,secondary:#e83a30"
-                    style="width:40px;height:40px">
-                </lord-icon>
-                <span>{{_('Dashboard')}}</span>
+                src="https://cdn.lordicon.com/abwrkdvl.json"
+                trigger="loop"
+                delay="1000"
+                state="loop-all"
+                colors="primary:#ffffff,secondary:#e83a30"
+                style="width:40px;height:40px">
+            </lord-icon>
+                <span>{{__('Dashboard')}}</span>
             </a>
+            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="py-2 collapse-inner rounded" style="background-color: #4d4d4d; color:#fff">
+                    <h6 class="collapse-header">{{__('Analytics:')}}</h6>
+                    <a class="collapse-item d-flex align-items-center" href="{{ route('admin.dashboard')}}">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/abwrkdvl.json"
+                            trigger="loop"
+                            delay="1000"
+                            state="loop-all"
+                            colors="primary:#ffffff,secondary:#e83a30"
+                            style="width:40px;height:40px">
+                        </lord-icon>
+                        <span style="color: #fffff">{{_('Cards View')}}</span>
+                    </a>
+                    <a class="collapse-item d-flex align-items-center" href="{{ route('admin.dashboard.table')}}">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/abwrkdvl.json"
+                            trigger="loop"
+                            delay="1000"
+                            state="loop-all"
+                            colors="primary:#ffffff,secondary:#e83a30"
+                            style="width:40px;height:40px">
+                        </lord-icon>
+                        <span style="color: #fffff">{{_('Table View')}}</span>
+                    </a>
+                    <a class="collapse-item d-flex align-items-center" href="{{ route('admin.dashboard.chart')}}">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/abwrkdvl.json"
+                            trigger="loop"
+                            delay="1000"
+                            state="loop-all"
+                            colors="primary:#ffffff,secondary:#e83a30"
+                            style="width:40px;height:40px">
+                        </lord-icon>
+                        <span style="color: #fffff">{{_('Chart View')}}</span>
+                    </a>
+
+                </div>
+            </div>
         </li>
-        <li class="nav-item ">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/map')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.map')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/iuhkfgfi.json"
@@ -79,7 +137,7 @@
             </a>
         </li>
         <hr class="sidebar-divider" />
-        <li class="nav-item">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/artists')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.artist')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/wuvorxbv.json"
@@ -92,7 +150,7 @@
                 <span>{{_('Artist')}}</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/songs')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.song')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/wzwygmng.json"
@@ -105,7 +163,7 @@
                 <span>{{__('Songs')}}</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/details')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.detail')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/uecgmesg.json"
@@ -118,7 +176,7 @@
             </a>
         </li>
         <hr class="sidebar-divider" />
-        <li class="nav-item">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/artist-widthraw')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.artistWidthraw')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/iawrhwdo.json"
@@ -131,7 +189,7 @@
                 <span>{{__('Artist Widthraw')}}</span>
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/artist-profit')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.artistProfit')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/ofdfurqa.json"
@@ -144,7 +202,7 @@
             </a>
         </li>
         <hr class="sidebar-divider" />
-        <li class="nav-item">
+        <li class="nav-item {{(str_contains(request()->path(), 'user100/excruciating-detail')) ? 'active' : ''}}">
             <a class="nav-link d-flex align-items-center" href="{{ route('admin.exdetail')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/vfczflna.json"
@@ -264,8 +322,9 @@
                     </ul>
                 </nav>
                 <!-- End of Topbar -->
-
-        @yield('content')
+<div class="content-bg-met">
+    @yield('content')
+</div>
     </div>
     <!-- End of Main Content -->
         <!-- Footer -->

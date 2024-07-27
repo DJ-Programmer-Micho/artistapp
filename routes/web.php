@@ -35,10 +35,13 @@ Route::get('/logout', [AuthController::class,'logout'])->name('logout');
 // 'LocalizationMiddleware',
 Route::prefix('/user100')->middleware(['checkStatus', 'adminAuth'])->group(function () {
     Route::get('/', [AdminController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard-table', [AdminController::class,'dashboardTable'])->name('admin.dashboard.table');
+    Route::get('/dashboard-chart', [AdminController::class,'dashboardChart'])->name('admin.dashboard.chart');
+    Route::get('/', [AdminController::class,'dashboard'])->name('admin.dashboard');
     Route::get('/map', [AdminController::class,'map'])->name('admin.map');
     Route::get('/artists', [AdminController::class,'artist'])->name('admin.artist');
     Route::get('/songs', [AdminController::class,'song'])->name('admin.song');
-    Route::get('/detail', [AdminController::class,'detail'])->name('admin.detail');
+    Route::get('/details', [AdminController::class,'detail'])->name('admin.detail');
     Route::get('/excruciating-detail', [AdminController::class,'exdetail'])->name('admin.exdetail');
     Route::get('/artist-widthraw', [AdminController::class,'artistWidthraw'])->name('admin.artistWidthraw');
     Route::get('/artist-profit', [AdminController::class,'artistProfit'])->name('admin.artistProfit');

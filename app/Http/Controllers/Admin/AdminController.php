@@ -10,6 +10,12 @@ class AdminController extends Controller
     public function dashboard(){
         return view('admins.pages.dashboard');
     }
+    public function dashboardTable(){
+        return view('admins.pages.dashboardTable');
+    }
+    public function dashboardChart(){
+        return view('admins.pages.dashboardChart');
+    }
     public function map(){
         return view('admins.pages.map');
     }
