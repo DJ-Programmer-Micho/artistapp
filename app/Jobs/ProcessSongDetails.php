@@ -45,9 +45,11 @@ class ProcessSongDetails implements ShouldQueue
                 'updated_at' => $timestamp,
             ];
         }
+        Log::info('Processing song details', ['records' => $this->records]);
 
         try {
             SongDetail::insert($insertData);
+            
         } catch (\Exception $e) {
             Log::error('Error inserting records:', ['error' => $e->getMessage()]);
             // Handle or log any exceptions here
