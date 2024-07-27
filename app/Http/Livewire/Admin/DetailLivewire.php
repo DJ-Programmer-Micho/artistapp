@@ -153,6 +153,15 @@ class DetailLivewire extends Component
         $command = escapeshellcmd("{$venvPythonPath} {$pythonScriptPath} {$tsvFilePath}");
         shell_exec($command);
 
+        // Capture the output and error messages
+        exec($command . ' 2>&1', $output, $return_var);
+
+        // Log the output for debugging
+        Log::info('Python script output: ' . implode("\n", $output));
+        Log::info('Python script return status: ' . $return_var);
+
+
+
         if (!file_exists($csvFilePath)) {
             throw new \Exception('CSV file conversion failed.');
         }
