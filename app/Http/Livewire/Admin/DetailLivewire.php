@@ -100,6 +100,7 @@ class DetailLivewire extends Component
     }
     private function insertSongDetailsInChunks($fileContents)
     {
+        dd($fileContents);
         $chunkSize = 1000; // Adjust based on performance testing
         $chunks = array_chunk($fileContents, $chunkSize);
 
