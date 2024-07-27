@@ -100,7 +100,7 @@ class DetailLivewire extends Component
     }
     private function insertSongDetailsInChunks($fileContents)
     {
-        dd($fileContents);
+        dd($fileContents); // this is not empty
         $chunkSize = 1000; // Adjust based on performance testing
         $chunks = array_chunk($fileContents, $chunkSize);
 
@@ -108,7 +108,8 @@ class DetailLivewire extends Component
             $records = [];
 
             foreach ($chunk as $line) {
-                $lineData = str_getcsv($line);
+                // $lineData = str_getcsv($line); // WIN OS
+                $lineData = str_getcsv(trim($line, '"')); // LINUX OS
                 if (count($lineData) === 13) {
                     $records[] = [
                         'user_id' => $this->selectArtist,
