@@ -89,7 +89,7 @@ class DetailLivewire extends Component
     
             // Insert data in chunks
             $this->insertSongDetailsInChunks($fileContents);
-
+            Log::info('CSV file contents:', ['contents' => $fileContents]);
             // Post-process actions
             $this->postProcess($tsvFile, $csvFile);
         // } catch (\Exception $e) {
@@ -122,7 +122,11 @@ class DetailLivewire extends Component
             }
 
             // Dispatch job for each chunk
-            ProcessSongDetails::dispatch($records);
+            if (!empty($records)) {
+                ProcessSongDetails::dispatch($records);
+            } else {
+                Log::info('No records to process.');
+            }
         }
     }
     
