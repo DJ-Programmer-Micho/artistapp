@@ -147,7 +147,10 @@ class DetailLivewire extends Component
 
         // Run the Python script to convert TSV to CSV
         $pythonScriptPath = base_path('scripts/convert_tsv_to_csv.py');
-        $command = escapeshellcmd("python3 {$pythonScriptPath} {$tsvFilePath}");
+        // $command = escapeshellcmd("python3 {$pythonScriptPath} {$tsvFilePath}"); //python2
+        // $command = escapeshellcmd("python3 {$pythonScriptPath} {$tsvFilePath}"); //python3
+        $venvPythonPath = '/home/ubuntu/myenv/bin/python'; // AWS EC2 Path
+        $command = escapeshellcmd("{$venvPythonPath} {$pythonScriptPath} {$tsvFilePath}");
         shell_exec($command);
 
         if (!file_exists($csvFilePath)) {
