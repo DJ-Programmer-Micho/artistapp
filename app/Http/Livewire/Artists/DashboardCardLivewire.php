@@ -69,7 +69,8 @@ class DashboardCardLivewire extends Component
         $recipt = ArtistWidthraw::where('user_id', $user->id)->sum('amount');
 
         // Calculate wallet balance
-        $wallet = $artistProfitEarnings - $totalTaxes - $recipt;
+        // $wallet = $artistProfitEarnings - $totalTaxes - $recipt;
+        $wallet = $artistProfitEarnings - $recipt;
 
         return view('artists.components.dashboardCard', [
             'artistProfitEarnings' => $artistProfitEarnings,

@@ -140,9 +140,10 @@
                         </div>
                         <div class="col-auto">
                             <lord-icon
-                                src="https://cdn.lordicon.com/zxnjhqao.json"
+                                src="https://cdn.lordicon.com/vfczflna.json"
                                 trigger="loop"
                                 delay="2000"
+                                state="hover-look-around"
                                 colors="primary:#ffffff,secondary:#c71f16"
                                 style="width:64px;height:64px">
                             </lord-icon>
@@ -165,9 +166,10 @@
                         </div>
                         <div class="col-auto">
                             <lord-icon
-                                src="https://cdn.lordicon.com/zxnjhqao.json"
+                                src="https://cdn.lordicon.com/msrokfyb.json"
                                 trigger="loop"
                                 delay="2000"
+                                state="loop-play"
                                 colors="primary:#ffffff,secondary:#c71f16"
                                 style="width:64px;height:64px">
                             </lord-icon>

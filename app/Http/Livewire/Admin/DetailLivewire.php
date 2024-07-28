@@ -90,7 +90,7 @@ class DetailLivewire extends Component
     
             // Insert data in chunks
             $this->insertSongDetailsInChunks($fileContents);
-            Log::info('CSV file contents:', ['contents' => $fileContents]);
+            // Log::info('CSV file contents:', ['contents' => $fileContents]);
             // Post-process actions
             $this->postProcess($tsvFile, $csvFile);
         // } catch (\Exception $e) {
@@ -123,7 +123,7 @@ class DetailLivewire extends Component
                     ];
                 }
             }
-            Log::info('Processed records before dispatch:', ['records' => $records]);
+            // Log::info('Processed records before dispatch:', ['records' => $records]);
 
             // Dispatch job for each chunk
             if (!empty($records)) {
@@ -155,7 +155,7 @@ class DetailLivewire extends Component
 
         // Run the Python script to convert TSV to CSV
         $pythonScriptPath = base_path('scripts/convert_tsv_to_csv.py');
-        // $command = escapeshellcmd("python3 {$pythonScriptPath} {$tsvFilePath}"); //python2
+        // $command = escapeshellcmd("python {$pythonScriptPath} {$tsvFilePath}"); //python2
         // $command = escapeshellcmd("python3 {$pythonScriptPath} {$tsvFilePath}"); //python3
         $venvPythonPath = '/home/ubuntu/myenv/bin/python'; // AWS EC2 Path
         $command = escapeshellcmd("{$venvPythonPath} {$pythonScriptPath} {$tsvFilePath}");

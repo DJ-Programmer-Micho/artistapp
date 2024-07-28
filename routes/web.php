@@ -43,8 +43,8 @@ Route::prefix('/user100')->middleware(['checkStatus', 'adminAuth'])->group(funct
     Route::get('/songs', [AdminController::class,'song'])->name('admin.song');
     Route::get('/details', [AdminController::class,'detail'])->name('admin.detail');
     Route::get('/excruciating-detail', [AdminController::class,'exdetail'])->name('admin.exdetail');
-    Route::get('/artist-widthraw', [AdminController::class,'artistWidthraw'])->name('admin.artistWidthraw');
     Route::get('/artist-profit', [AdminController::class,'artistProfit'])->name('admin.artistProfit');
+    Route::get('/artist-widthraw', [AdminController::class,'artistWidthraw'])->name('admin.artistWidthraw');
 });
 
 /*
@@ -59,12 +59,6 @@ Route::prefix('/artist')->middleware(['checkStatus', 'artistAuth'])->group(funct
     Route::get('/songs', [ArtistController::class,'songs'])->name('artist.song');
     Route::get('/expire', [ArtistController::class,'expire'])->name('artist.expire');
     Route::get('/artist-widthraw', [ArtistController::class,'artistWidthraw'])->name('artist.artistWidthraw');
-    // Route::get('/artists', [ArtistController::class,'artist'])->name('artist.artist');
-    // Route::get('/songs', [ArtistController::class,'song'])->name('artist.song');
-    // Route::get('/detail', [ArtistController::class,'detail'])->name('artist.detail');
-    // Route::get('/excruciating-detail', [ArtistController::class,'exdetail'])->name('artist.exdetail');
-    // Route::get('/artist-widthraw', [ArtistController::class,'artistWidthraw'])->name('artist.artistWidthraw');
-    // Route::get('/artist-profit', [ArtistController::class,'artistProfit'])->name('artist.artistProfit');
 });
 
 

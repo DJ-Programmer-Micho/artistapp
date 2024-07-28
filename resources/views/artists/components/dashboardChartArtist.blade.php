@@ -17,7 +17,7 @@
                     <div class="my-4">
                         <label for="yearSelect">{{__('Select Year:')}}</label>
                         <select id="year" wire:model="year" wire:change="loadChartData">
-                            @for($y = date('Y'); $y >= date('Y') - 10; $y--)
+                            @for($y = date('Y'); $y >= 2022; $y--)
                                 <option value="{{ $y }}">{{ $y }}</option>
                             @endfor
                         </select>

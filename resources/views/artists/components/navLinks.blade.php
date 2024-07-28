@@ -53,7 +53,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item ">
-            <a class="nav-link d-flex align-items-center" href="{{ route('artist.dashboard')}}">
+            <a class="nav-link align-items-center" href="{{ route('artist.dashboard')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/abwrkdvl.json"
                     trigger="loop"
@@ -66,7 +66,7 @@
             </a>
         </li>
         <li class="nav-item ">
-            <a class="nav-link d-flex align-items-center" href="{{ route('artist.map')}}">
+            <a class="nav-link align-items-center" href="{{ route('artist.map')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/iuhkfgfi.json"
                     trigger="loop"
@@ -80,7 +80,7 @@
         </li>
         <hr class="sidebar-divider" />
        <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="{{ route('artist.song')}}">
+            <a class="nav-link align-items-center" href="{{ route('artist.song')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/wzwygmng.json"
                     trigger="loop"
@@ -93,7 +93,7 @@
             </a>
         </li>
        <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="{{ route('artist.expire')}}">
+            <a class="nav-link align-items-center" href="{{ route('artist.expire')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/uecgmesg.json"
                     trigger="loop"
@@ -106,7 +106,7 @@
         </li>
         <hr class="sidebar-divider" />
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" href="{{ route('artist.artistWidthraw')}}">
+            <a class="nav-link align-items-center" href="{{ route('artist.artistWidthraw')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/iawrhwdo.json"
                     trigger="loop"
@@ -118,7 +118,7 @@
                 <span>{{__('Artist Widthraw')}}</span>
             </a>
         </li>
-        <hr class="sidebar-divider" />
+        {{-- <hr class="sidebar-divider" /> --}}
        {{--    <li class="nav-item">
             <a class="nav-link d-flex align-items-center" href="{{ route('artist.exdetail')}}">
                 <lord-icon
@@ -247,7 +247,7 @@
         <footer class="sticky-footer bg-gradient-yt-dark-l">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2021</span>
+                    <span>Copyright &copy; M Studio Iraq 2022 - {{ date('Y') }}</span>
                 </div>
             </div>
         </footer>

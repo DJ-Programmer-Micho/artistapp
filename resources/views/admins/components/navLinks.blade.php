@@ -124,7 +124,7 @@
             </div>
         </li>
         <li class="nav-item {{(str_contains(request()->path(), 'user100/map')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.map')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.map')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/iuhkfgfi.json"
                     trigger="loop"
@@ -138,7 +138,7 @@
         </li>
         <hr class="sidebar-divider" />
         <li class="nav-item {{(str_contains(request()->path(), 'user100/artists')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.artist')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.artist')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/wuvorxbv.json"
                     trigger="loop"
@@ -151,7 +151,7 @@
             </a>
         </li>
         <li class="nav-item {{(str_contains(request()->path(), 'user100/songs')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.song')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.song')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/wzwygmng.json"
                     trigger="loop"
@@ -164,7 +164,7 @@
             </a>
         </li>
         <li class="nav-item {{(str_contains(request()->path(), 'user100/details')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.detail')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.detail')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/uecgmesg.json"
                     trigger="loop"
@@ -177,7 +177,7 @@
         </li>
         <hr class="sidebar-divider" />
         <li class="nav-item {{(str_contains(request()->path(), 'user100/artist-widthraw')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.artistWidthraw')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.artistWidthraw')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/iawrhwdo.json"
                     trigger="loop"
@@ -190,7 +190,7 @@
             </a>
         </li>
         <li class="nav-item {{(str_contains(request()->path(), 'user100/artist-profit')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.artistProfit')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.artistProfit')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/ofdfurqa.json"
                     trigger="loop"
@@ -203,7 +203,7 @@
         </li>
         <hr class="sidebar-divider" />
         <li class="nav-item {{(str_contains(request()->path(), 'user100/excruciating-detail')) ? 'active' : ''}}">
-            <a class="nav-link d-flex align-items-center" href="{{ route('admin.exdetail')}}">
+            <a class="nav-link align-items-center" href="{{ route('admin.exdetail')}}">
                 <lord-icon
                     src="https://cdn.lordicon.com/vfczflna.json"
                     trigger="loop"
@@ -322,16 +322,15 @@
                     </ul>
                 </nav>
                 <!-- End of Topbar -->
-<div class="content-bg-met">
     @yield('content')
-</div>
+
     </div>
     <!-- End of Main Content -->
         <!-- Footer -->
         <footer class="sticky-footer bg-gradient-yt-dark-l">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2021</span>
+                    <span>Copyright &copy; M Studio Iraq 2022 - {{ date('Y') }}</span>
                 </div>
             </div>
         </footer>

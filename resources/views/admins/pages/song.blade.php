@@ -10,5 +10,10 @@
     $('#songUpdateModal').modal('hide');
     $('#songRenewModal').modal('hide');
 }) 
+
+window.addEventListener('close-modal-renew', event => {
+    $('#deleteRenewModal').modal('hide');
+    $('#songRenewUpdateModal').modal('hide');
+}) 
 </script>
 @endsection

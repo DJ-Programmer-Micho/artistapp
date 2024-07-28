@@ -31,10 +31,10 @@ class AdminController extends Controller
     public function exdetail(){
         return view('admins.pages.excruciatingDetail');
     }
-    public function artistWidthraw(){
-        return view('admins.pages.widthraw');
-    }
     public function artistProfit(){
         return view('admins.pages.profit');
+    }
+    public function artistWidthraw(){
+        return view('admins.pages.widthraw');
     }
 }

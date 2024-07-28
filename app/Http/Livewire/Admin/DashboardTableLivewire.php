@@ -204,7 +204,8 @@ public function render()
 
         // Calculate artist's receipt and wallet
         $receipt = $artist->widthraw->sum('amount') ?? 0; // Using eager loaded count
-        $wallet = $artistProfitEarnings - $receipt - $taxPayed;
+        // $wallet = $artistProfitEarnings - $receipt - $taxPayed;
+        $wallet = $artistProfitEarnings - $receipt;
 
         return [
             'id' => $artist->id,

@@ -201,6 +201,81 @@ class SongLivewire extends Component
             $this->dispatch('alert', ['type' => 'error', 'message' => __('An error occurred while Deleting Song')]);
         }
     } // END OF FUNCTION (DESTROY SONG)
+
+
+    function deleteRenew(int $song_id){
+        try {
+            $this->showTextTemp = $song_id;
+        }  catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('An error occurred while Getting Data')]);
+        }
+    } // END OF FUNCTION (DELETE SONG)
+
+    function destroyRenew(){
+        try {
+                SongRenewals::find($this->showTextTemp)->delete();
+                $this->song_selected_id_delete = null;
+                $this->song_selected_name_delete = null;
+                $this->nameDelete = null;
+                $this->showTextTemp = null;
+                $this->confirmDelete = null;
+                $this->confirmDelete = false;
+                $this->closeModalRenew();
+            $this->dispatch('alert', ['type' => 'success',  'message' => __('Song Deleted Successfully')]);
+        }  catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('An error occurred while Deleting Song')]);
+        }
+    } // END OF FUNCTION (DESTROY SONG)
+
+
+    public $renewalsHistory = [];
+
+    function calendarSong(int $song_id)
+    {
+        try {
+            $this->renewalsHistory = SongRenewals::with('song')->where('song_id', $song_id)->get();
+
+        } catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('An error occurred while fetching renewal history')]);
+        }
+    }
+
+    function editRenew(int $song_id) {
+        try {
+            // Get Data
+            $song_renew_edit = SongRenewals::with('song')->find($song_id);
+            $this->songUpdate = $song_renew_edit;
+            
+            // Store Data
+            $this->songName = $song_renew_edit->song->song_name;
+            $this->releaseDate = $song_renew_edit->release_date;
+            $this->renewDate = $song_renew_edit->renew_date ?? null;
+            $this->expireDate = $song_renew_edit->expire_date;
+            $this->cost = $song_renew_edit->cost;
+        }  catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('An error occurred while Getting Data')]);
+        }
+    } // FUNCTION OF (EDIT SONG)
+
+    function updateRenew() {
+        try {
+            
+            // Update Song
+            SongRenewals::where('id', $this->songUpdate->id)->update([
+                'release_date' => $this->releaseDate,
+                'renew_date' => $this->renewDate,
+                'expire_date' => $this->expireDate,
+                'cost' => $this->cost,
+            ]);
+
+
+            $this->closeModalRenew();
+            $this->dispatch('alert', ['type' => 'success',  'message' => __('Song Updated Successfully')]);
+        }  catch (\Exception $e) {
+            $this->dispatch('alert', ['type' => 'error', 'message' => __('An error occurred while Updating Song')]);
+        }
+    } // FUNCTION OF (UPDATE SONG)
+
     
     //UTILITIES
     function posterViewer()
@@ -222,6 +297,12 @@ class SongLivewire extends Component
         // Reset Form
         $this->reset(['selectArtist', 'songName', 'poster', 'status','releaseDate','expireDate']);
         $this->dispatch('close-modal');
+    }
+
+    function closeModalRenew()
+    {
+        // Reset Form
+        $this->dispatch('close-modal-renew');
     }
 
     public function updateStatus(int $user_id)

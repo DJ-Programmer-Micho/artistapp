@@ -97,6 +97,10 @@
                                 wire:click="editSong({{ $item->id }})" class="btn btn-warning text-dark m-1">
                                 <i class="fas fa-history fa-flip-horizontal"></i>
                             </button>
+                            <button type="button" data-toggle="modal" data-target="#calendarModal"
+                                wire:click="calendarSong({{ $item->id }})" class="btn btn-warning text-dark m-1">
+                                <i class="fas fa-calendar fa-flip-horizontal"></i>
+                            </button>
                             <button type="button" data-toggle="modal" data-target="#deleteSongModal"
                                 wire:click="deleteSong({{ $item->id }})" class="btn btn-danger m-1">
                                 <i class="far fa-trash-alt"></i>

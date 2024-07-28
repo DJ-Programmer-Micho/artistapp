@@ -45,9 +45,9 @@ class ProcessSongDetails implements ShouldQueue
                 'updated_at' => $timestamp,
             ];
         }
-        Log::info('Handling ProcessSongDetails job', ['records' => $this->records]);
+        // Log::info('Handling ProcessSongDetails job', ['records' => $this->records]);
 
-        Log::info('Processing song details', ['records' => $this->records]);
+        // Log::info('Processing song details', ['records' => $this->records]);
 
         try {
             SongDetail::insert($insertData);
