@@ -11,7 +11,7 @@ use App\Models\SongRenewals;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
  
-class workLivewire extends Component
+class WorkLivewire extends Component
 {
     use WithPagination;
  
