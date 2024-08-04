@@ -19,30 +19,7 @@ class workLivewire extends Component
     //INIT
     public $artistList;
     public $distImgPath;
-    public $distViewer;
     public $emptyImg;
-    //FILTERS
-    public $search = '';
-    public $statusFilter = '';
-    public $selectArtistFilter = '';
-    //TEXT FIELDS
-    public $selectArtist;
-    public $songName;
-    public $poster;
-    public $releaseDate;
-    public $renewDate;
-    public $expireDate;
-    public $status;
-    public $cost;
-    // TEMP VARIABLES
-    public $songUpdate;
-    public $song_selected_id_delete;
-    public $song_selected_name_delete;
-    public $nameDelete;
-    public $showTextTemp;
-    public $confirmDelete;
-    public $songNameToDelete;
-    
     public $artistNameCollection;
     //ON LOAD FUNCTIONS
     function mount()
