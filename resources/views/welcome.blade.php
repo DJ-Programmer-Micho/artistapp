@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
+        <link rel="stylesheet" href="{{asset('home/css/main.css')}}">
+        <title>M Studio Iraq | Artist</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -16,7 +16,51 @@
         </style>
     </head>
     <body class="antialiased">
-        <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        <div class="perspective effect-rotate-left">
+            <div class="container"><div class="outer-nav--return"></div>
+              <div id="viewport" class="l-viewport">
+                <div class="l-wrapper">
+                  <header class="header">
+                    <a class="header--logo" href="#0">
+                      <img src="https://i.ibb.co/KX2BJDC/MstudioS.jpg" alt="MstudioIraq" width="42">
+                      <p>M Studio Iraq | Artists</p>
+                    </a>
+                    <a href="/login">
+                        <button class="header--cta cta">Log In</button>
+                      </a>
+                    <div class="header--nav-toggle">
+                      <span></span>
+                    </div>
+                  </header>
+                  <nav class="l-side-nav">
+                    <ul class="side-nav">
+                      <li class="is-active"><span>Home</span></li>
+                      <li><span>Works</span></li>
+                      <li><span>About</span></li>
+                      {{-- <li><span>Contact</span></li>
+                      <li><span>Hire us</span></li> --}}
+                    </ul>
+                  </nav>
+                  <ul class="l-main-content main-content">
+                  @livewire('home.home-livewire')
+                  @livewire('home.work-livewire')
+                  @livewire('home.about-livewire')
+                  {{-- @livewire('home.contact-livewire')
+                  @livewire('home.hire-us-livewire') --}}
+                </ul>
+                </div>
+            </div>
+          </div>
+          <ul class="outer-nav">
+            <li class="is-active">Home</li>
+            <li>Works</li>
+            <li>About</li>
+            {{-- <li>Contact</li>
+            <li>Hire us</li> --}}
+          </ul>
+        </div>
+        
+        {{-- <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
                     @auth
@@ -135,6 +179,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script>window.jQuery || document.write(`<script src="{{asset('home/js/vendor/jquery-2.2.4.min.js')}}"><\/script>`)</script>
+        <script src="{{asset('home/js/functions-min.js')}}"></script>
     </body>
 </html>
