@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
             return 'https://s3.amazonaws.com/gather.fandalism.com/'; // Replace "abc" with your desired value or logic to fetch the data.
         });
         $this->app->singleton('deduct', function () {
-            return 0.84; // Replace "abc" with your desired value or logic to fetch the data.
+            return 0.86; // Replace "abc" with your desired value or logic to fetch the data.
         });
     }
 }
