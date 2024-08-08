@@ -386,7 +386,7 @@ public function render()
     $songs = $query->get();
 
     // Fetch earnings per song and store them in an array
-    $earnings = SongDetail::selectRaw('song_id, sum(earnings_usd) as total_earnings')
+    $earnings = SongDetail::selectRaw('song_id, sum(earnings_usd * '.app('deduct').') as total_earnings')
         ->groupBy('song_id')
         ->pluck('total_earnings', 'song_id')
         ->toArray();

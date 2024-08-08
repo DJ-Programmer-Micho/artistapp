@@ -23,12 +23,7 @@ class DashboardCardLivewire extends Component
 
     //RENDER VIEW
     public function render()
-    {
-        // Fetch all necessary data with eager loading
-        // $songDetails = SongDetail::with(['song.user.profits' => function ($query) {
-        //     $query->orderBy('effective_date', 'desc');
-        // }])->get();
-    
+    {  
         // Initialize variables for aggregated calculations
         $cleanEarning = 0;
         $artistProfitEarnings = 0;

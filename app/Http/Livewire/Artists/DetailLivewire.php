@@ -71,7 +71,7 @@ class DetailLivewire extends Component
                     });
 
                 if ($profitPercentage) {
-                    $artistProfit = $detail->earnings_usd * ($profitPercentage->profit_percentage / 100);
+                    $artistProfit = ($detail->earnings_usd * app('deduct')) * ($profitPercentage->profit_percentage / 100);
                     $artistProfitEarnings += $artistProfit;
                 }
             }

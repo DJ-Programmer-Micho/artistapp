@@ -44,7 +44,7 @@ class DashboardArtistChartLivewire extends Component
             // Fetch earnings data for the current song
             $earningsData = SongDetail::select(
                     DB::raw('MONTH(sale_month) as month'),
-                    DB::raw('SUM(earnings_usd) as total_earnings')
+                    DB::raw('SUM(earnings_usd * '.app('deduct').') as total_earnings')
                 )
                 ->where('song_id', $song->id)
                 ->whereBetween('sale_month', [$startDate, $endDate])

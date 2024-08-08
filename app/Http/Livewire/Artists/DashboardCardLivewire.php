@@ -24,7 +24,7 @@ class DashboardCardLivewire extends Component
         $this->subscribe = $subscribe;
         $this->views = $views;
         $this->uploads = $uploads;
-        $this->songDetails = $service->getSongDetails();
+        // $this->songDetails = $service->getSongDetails();
     }
 
     //RENDER VIEW
@@ -52,7 +52,9 @@ class DashboardCardLivewire extends Component
                     });
 
                 if ($profitPercentage) {
-                    $artistProfitEarnings += $detail->earnings_usd * ($profitPercentage->profit_percentage / 100);
+                    // Apply 14% deduction and calculate artist profit earnings
+                    $adjustedEarnings = $detail->earnings_usd * app('deduct');
+                    $artistProfitEarnings += $adjustedEarnings * ($profitPercentage->profit_percentage / 100);
                 }
             }
         });

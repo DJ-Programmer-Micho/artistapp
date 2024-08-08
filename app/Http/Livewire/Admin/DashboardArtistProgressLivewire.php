@@ -75,7 +75,7 @@ class DashboardArtistProgressLivewire extends Component
 
     private function paginateData($groupBy, $aggregateColumn, $page, $withSong = false)
     {
-        $query = SongDetail::select($groupBy, DB::raw("SUM($aggregateColumn) as total_$aggregateColumn"))
+        $query = SongDetail::select($groupBy, DB::raw("SUM($aggregateColumn * ".app('deduct').") as total_$aggregateColumn"))
             ->groupBy($groupBy)
             ->orderByDesc("total_$aggregateColumn");
 

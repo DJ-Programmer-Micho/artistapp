@@ -94,7 +94,7 @@ class DashboardArtistProgressLivewire extends Component
     
     private function buildQuery($groupBy, $aggregateColumn, $userId, $withSong)
     {
-        $query = SongDetail::select($groupBy, DB::raw("SUM($aggregateColumn) as total_$aggregateColumn"))
+        $query = SongDetail::select($groupBy, DB::raw("SUM($aggregateColumn * ".app('deduct').") as total_$aggregateColumn"))
             ->where('user_id', $userId)
             ->groupBy($groupBy)
             ->orderByDesc("total_$aggregateColumn");
@@ -144,7 +144,7 @@ class DashboardArtistProgressLivewire extends Component
         $user = Auth::user();
         
         // Query to get the total earnings for each store
-        $query = SongDetail::select('store', DB::raw("SUM(earnings_usd) as total_earnings_usd"))
+        $query = SongDetail::select('store', DB::raw("SUM(earnings_usd * ".app('deduct').") as total_earnings_usd"))
             ->where('user_id', $user->id)
             ->groupBy('store')
             ->orderByDesc('total_earnings_usd');
