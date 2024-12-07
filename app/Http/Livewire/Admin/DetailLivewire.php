@@ -343,7 +343,7 @@ private function insertBulkSongDetailsInChunks($fileContents, $songs)
         $csvFilePath = str_replace('.tsv', '.csv', $tsvFilePath);
 
         // Run the Python script to convert TSV to CSV
-        // $pythonScriptPath = base_path('scripts/convert_tsv_to_csv.py');
+        $pythonScriptPath = base_path('scripts/convert_tsv_to_csv.py');
         // $command = escapeshellcmd("python {$pythonScriptPath} {$tsvFilePath}"); //python2
         // $command = escapeshellcmd("python3 {$pythonScriptPath} {$tsvFilePath}"); //python3
 
