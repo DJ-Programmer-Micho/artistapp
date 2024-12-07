@@ -9,6 +9,10 @@
             <div class="">
                 <button class="btn btn-success" data-toggle="modal" data-target="#detailAddModal">{{ __('Add New Song Details') }}</button>
             </div>
+
+            <div class="">
+                <button class="btn btn-info mx-1" data-toggle="modal" data-target="#detailAddBulkModal">{{ __('Add Bulk Song Details') }}</button>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-12 col-lg-3">

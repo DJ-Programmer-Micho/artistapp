@@ -6,8 +6,10 @@
 @section('modalScript')
 <script>
     window.addEventListener('close-modal', event => { $('#detailAddModal').modal('hide'); }) 
+    window.addEventListener('close-modal-bulk', event => { $('#detailAddBulkModal').modal('hide'); }) 
     
     window.addEventListener('close-modal-confirmation', event => { $('#addComformationModal').modal('hide'); }) 
+    window.addEventListener('close-modal-confirmation-bulk', event => { $('#addBulkComformationModal').modal('hide'); }) 
     // window.addEventListener('close-modal', event => { $('#detailAddModal').modal('hide'); }) 
 </script>
 {{-- @script
