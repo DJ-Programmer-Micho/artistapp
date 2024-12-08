@@ -25,6 +25,9 @@ Route::get('/login', [AuthController::class,'index'])->name('login');
 Route::post('/login', [AuthController::class,'login'])->name('logging');
 Route::get('/logout', [AuthController::class,'logout'])->name('logout');
 
+Route::get('/phpinfo-met', function () {
+    phpinfo();
+});
 
 
 /*
