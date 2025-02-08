@@ -43,7 +43,7 @@ class YoutubeCardLivewire extends Component
         }
         $channelName = $data['items'][0]['snippet']['title'];
         $thumbnails = $data['items'][0]['snippet']['thumbnails']['medium']['url'];
-        $bannerImageUrl = $data['items'][0]['brandingSettings']['image']['bannerExternalUrl'];
+        $bannerImageUrl = $data['items'][0]['brandingSettings']['image']['bannerExternalUrl'] ?? "https://yt3.googleusercontent.com/RgAwDKNxaC6ew8nopJT-Q06lLAjHQjfsD_tyFmUB-cfc1_ZQ5N19fTtpRUSfANUrg8Koph_l=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj";
         // dd($bannerImageUrl);
         $subscribersCount = $data['items'][0]['statistics']['subscriberCount'];
         $viewCount = $data['items'][0]['statistics']['viewCount'];
