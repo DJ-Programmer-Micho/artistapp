@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class DetailLivewireConverter extends Component
+class DetailLivewire extends Component
 {
     use WithPagination, WithFileUploads;
 
@@ -49,8 +49,6 @@ class DetailLivewireConverter extends Component
     public $songNameToDelete;
     public $existingSongs = [];
     public $nonExistingSongs;
-    public array $tmpFiles = [];
-
 
     // MAIN FUNCTION
     public function mount()
@@ -141,194 +139,191 @@ class DetailLivewireConverter extends Component
 
     // BULK INSERTION
     private function processUploadedFile()
-    {
-        try {
-            // Store uploaded file and get its path
-            $path = $this->data->store('livewire-tmp');
-            $uploadedPath = storage_path('app/' . $path);
-            $this->tmpFiles[] = $uploadedPath;
+{
+    try {
+        // Store uploaded file and get its path
+        $path = $this->data->store('livewire-tmp');
+        $tsvFile = storage_path('app/' . $path);
 
-            // Detect extension
-            $ext = strtolower(pathinfo($uploadedPath, PATHINFO_EXTENSION));
+        // Convert TSV to CSV
+        $csvFile = $this->convertTsvToCsv($tsvFile);
 
-            // If CSV: convert to standardized TSV (13 columns your inserters expect)
-            // If TSV/TXT: use as-is
-            if ($ext === 'csv') {
-                $tsvFile = $this->convertCsvToStandardTsv($uploadedPath);
-            } else {
-                $tsvFile = $uploadedPath;
-                $this->tmpFiles[] = $tsvFile;
-            }
+        // Read CSV content
+        $fileContents = file($csvFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($fileContents === false) {
+            throw new \Exception('Failed to read the CSV file.');
+        }
 
-            // Convert standardized TSV -> CSV (your existing step)
-            $csvFile = $this->convertTsvToCsv($tsvFile);
+        // Skip the header row
+        array_shift($fileContents);
 
-            // Read CSV content
-            $fileContents = file($csvFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            if ($fileContents === false) {
-                throw new \Exception('Failed to read the CSV file.');
-            }
-
-            // Skip the header row
-            array_shift($fileContents);
-
-            // Map songs by artist and title
-            $songs = Song::where('user_id', $this->selectArtist)
-                ->get(['id', 'song_name'])
-                ->keyBy(function ($song) {
-                    return trim($song->song_name);
-                });
-
-            if ($songs->isEmpty()) {
-                $this->dispatch('alert', [
-                    'type' => 'error',
-                    'message' => __('No songs found for the selected artist. Please check the selected artist.'),
-                ]);
-                return null;
-            }
-
-            // Titles from file (column index 4 in the standardized CSV)
-            $fileSongs = collect($fileContents)->map(function ($line) {
-                $lineData = str_getcsv($line);   // <-- safer than trim(...,'"')
-                return $lineData[4] ?? null;
-            })->filter()->unique();
-
-            // Separate existing / non-existing
-            $existingSongs = $fileSongs->filter(function ($title) use ($songs) {
-                return $songs->has(trim($title));
+        // Map songs by artist and title
+        $songs = Song::where('user_id', $this->selectArtist)
+            ->get(['id', 'song_name'])
+            ->keyBy(function ($song) {
+                return trim($song->song_name); // Ensure keys are trimmed for consistency
             });
-            $nonExistingSongs = $fileSongs->diff($existingSongs);
 
-            // Return everything needed downstream
-            return compact('existingSongs', 'nonExistingSongs', 'fileContents', 'csvFile', 'tsvFile', 'songs');
-        } catch (\Exception $e) {
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('Error processing the uploaded file.')]);
-            Log::error('Error processing uploaded file:', ['error' => $e->getMessage()]);
-            return null;
-        }
-    }
-
-    public function confirmationBulkData()
-    {
-        try {
-            $this->validate([
-                'selectArtist' => 'required',
-                'data' => 'required|file|mimes:csv,tsv,txt',
-            ]);
-
-            $processedData = $this->processUploadedFile();
-
-            if (!$processedData) {
-                return; // Stop if there was an error
-            }
-
-            $this->existingSongs = $processedData['existingSongs'];
-            $this->nonExistingSongs = $processedData['nonExistingSongs'];
-
-            // Assign temporary values for confirmation modal
-            $this->artistNameTmp = User::find($this->selectArtist)->name;
-            $this->fileNameTmp = $this->data->getClientOriginalName();
-
-            // Show confirmation modal
-            $this->dispatch('close-modal');
-            $this->dispatch('close-modal-bulk');
-            $this->dispatch('showBulkConfirmationModal');
-            $this->dispatch('alert', ['type' => 'success', 'message' => __('Song details checked')]);
-        } catch (\Exception $e) {
-            $this->dispatch('alert', ['type' => 'error', 'message' => __('Something went wrong.')]);
-            // Log::info('Progress record:', ['record' => $e]);
-        }
-    }
-
-    public function saveBulkSongDetails()
-    {
-        try {
-            $this->validate([
-                'selectArtist' => 'required',
-                'data' => 'required|file|mimes:csv,tsv,txt',
-            ]);
-
-            $processedData = $this->processUploadedFile();
-
-            if (!$processedData) {
-                return; // Stop if there was an error
-            }
-
-            $this->existingSongs = $processedData['existingSongs'];
-            $this->nonExistingSongs = $processedData['nonExistingSongs'];
-
-            if ($this->nonExistingSongs->isNotEmpty()) {
-                $this->dispatch('alert', ['type' => 'warning', 'message' => __('Some Songs Need to be Added!.')]);
-                $this->dispatch('stopTimer');
-                $this->dispatch('close-modal-confirmation');
-                $this->dispatch('close-modal-confirmation-bulk');
-                // Update progress and timer
-                $this->progress = 0;
-                $this->closeModal();
-                return; // Stop further execution if non-existing songs are found
-            }
-
-            // Delete existing song details
-            SongDetail::where('user_id', $this->selectArtist)->delete();
-            // Insert song details in chunks
-            $this->insertBulkSongDetailsInChunks($processedData['fileContents'], $processedData['songs']);
-
-            $this->postProcess($processedData['tsvFile'], $processedData['csvFile']);
-        } catch (\Exception $e) {
+        if ($songs->isEmpty()) {
             $this->dispatch('alert', [
                 'type' => 'error',
-                'message' => __('There was an error adding the song details. Please try again.'),
+                'message' => __('No songs found for the selected artist. Please check the selected artist.'),
             ]);
-            Log::error('Error adding song details:', ['error' => $e->getMessage()]);
+            return null; // Stop further execution
         }
+
+        // Parse the uploaded file to extract song titles
+        $fileSongs = collect($fileContents)->map(function ($line) {
+            $lineData = str_getcsv(trim($line, '"')); // Parse CSV line
+            return $lineData[4] ?? null; // Extract song title (adjust index as needed)
+        })->filter()->unique(); // Remove null or empty titles
+
+        // Separate songs into existing and non-existing based on the database
+        $existingSongs = $fileSongs->filter(function ($songTitle) use ($songs) {
+            return $songs->has(trim($songTitle));
+        });
+
+        $nonExistingSongs = $fileSongs->diff($existingSongs);
+
+        // Return processed data
+        return compact('existingSongs', 'nonExistingSongs', 'fileContents', 'csvFile', 'tsvFile', 'songs');
+    } catch (\Exception $e) {
+        $this->dispatch('alert', ['type' => 'error', 'message' => __('Error processing the uploaded file.')]);
+        Log::error('Error processing uploaded file:', ['error' => $e->getMessage()]);
+        return null;
     }
-        
-    private function insertBulkSongDetailsInChunks($fileContents, $songs)
-    {
-        $chunkSize = 1000; // Process data in chunks for efficiency
-        $chunks = array_chunk($fileContents, $chunkSize);
+}
 
-        foreach ($chunks as $chunk) {
-            $records = [];
+public function confirmationBulkData()
+{
+    try {
+        $this->validate([
+            'selectArtist' => 'required',
+            'data' => 'required|file|mimes:csv,tsv,txt',
+        ]);
 
-            foreach ($chunk as $line) {
-                // Parse each line of the file
-                // $lineData = str_getcsv(trim($line, '"')); // For Linux OS
-                $lineData = str_getcsv($line);
-                if (count($lineData) === 13) {
-                    // Extract song title from the file
-                    $songTitle = trim($lineData[4]); // Ensure trimming to match titles precisely
+        $processedData = $this->processUploadedFile();
 
-                    // Get the song_id dynamically
-                    $songId = $songs[$songTitle]->id ?? null;
+        if (!$processedData) {
+            return; // Stop if there was an error
+        }
 
-                    if ($songId) {
-                        $records[] = [
-                            'user_id' => $this->selectArtist,
-                            'song_id' => $songId,
-                            'r_date' => date('Y-m-d', strtotime($lineData[0])),
-                            'sale_month' => date('Y-m-d', strtotime($lineData[1])),
-                            'store' => $lineData[2],
-                            'quantity' => (int)$lineData[7],
-                            'country_of_sale' => $lineData[10],
-                            'earnings_usd' => (float)$lineData[12],
-                        ];
-                    } else {
-                        // Log::warning('Song not found for title:', ['songTitle' => $songTitle]);
-                    }
+        $this->existingSongs = $processedData['existingSongs'];
+        $this->nonExistingSongs = $processedData['nonExistingSongs'];
+
+        // if ($this->nonExistingSongs != []) {
+        //     // Notify the user about non-existing songs
+        //     $this->dispatch('alert', [
+        //         'type' => 'error',
+        //         'message' => __('The uploaded file contains songs that do not belong to the selected artist.'),
+        //     ]);
+        //     return;
+        // }
+
+        // Assign temporary values for confirmation modal
+        $this->artistNameTmp = User::find($this->selectArtist)->name;
+        $this->fileNameTmp = $this->data->getClientOriginalName();
+
+        // Show confirmation modal
+        $this->dispatch('close-modal');
+        $this->dispatch('close-modal-bulk');
+        $this->dispatch('showBulkConfirmationModal');
+        $this->dispatch('alert', ['type' => 'success', 'message' => __('Song details checked')]);
+    } catch (\Exception $e) {
+        $this->dispatch('alert', ['type' => 'error', 'message' => __('Something went wrong.')]);
+        // Log::info('Progress record:', ['record' => $e]);
+    }
+}
+
+public function saveBulkSongDetails()
+{
+    try {
+        $this->validate([
+            'selectArtist' => 'required',
+            'data' => 'required|file|mimes:tsv,txt',
+        ]);
+
+        $processedData = $this->processUploadedFile();
+
+        if (!$processedData) {
+            return; // Stop if there was an error
+        }
+
+        $this->existingSongs = $processedData['existingSongs'];
+        $this->nonExistingSongs = $processedData['nonExistingSongs'];
+
+        if ($this->nonExistingSongs->isNotEmpty()) {
+            $this->dispatch('alert', ['type' => 'warning', 'message' => __('Some Songs Need to be Added!.')]);
+            $this->dispatch('stopTimer');
+            $this->dispatch('close-modal-confirmation');
+            $this->dispatch('close-modal-confirmation-bulk');
+            // Update progress and timer
+            $this->progress = 0;
+            $this->closeModal();
+            return; // Stop further execution if non-existing songs are found
+        }
+
+        // Delete existing song details
+        SongDetail::where('user_id', $this->selectArtist)->delete();
+        // Insert song details in chunks
+        $this->insertBulkSongDetailsInChunks($processedData['fileContents'], $processedData['songs']);
+
+        $this->postProcess($processedData['tsvFile'], $processedData['csvFile']);
+    } catch (\Exception $e) {
+        $this->dispatch('alert', [
+            'type' => 'error',
+            'message' => __('There was an error adding the song details. Please try again.'),
+        ]);
+        Log::error('Error adding song details:', ['error' => $e->getMessage()]);
+    }
+}
+    
+private function insertBulkSongDetailsInChunks($fileContents, $songs)
+{
+    $chunkSize = 1000; // Process data in chunks for efficiency
+    $chunks = array_chunk($fileContents, $chunkSize);
+
+    foreach ($chunks as $chunk) {
+        $records = [];
+
+        foreach ($chunk as $line) {
+            // Parse each line of the file
+            $lineData = str_getcsv(trim($line, '"')); // For Linux OS
+
+            if (count($lineData) === 13) {
+                // Extract song title from the file
+                $songTitle = trim($lineData[4]); // Ensure trimming to match titles precisely
+
+                // Get the song_id dynamically
+                $songId = $songs[$songTitle]->id ?? null;
+
+                if ($songId) {
+                    $records[] = [
+                        'user_id' => $this->selectArtist,
+                        'song_id' => $songId,
+                        'r_date' => date('Y-m-d', strtotime($lineData[0])),
+                        'sale_month' => date('Y-m-d', strtotime($lineData[1])),
+                        'store' => $lineData[2],
+                        'quantity' => (int)$lineData[7],
+                        'country_of_sale' => $lineData[10],
+                        'earnings_usd' => (float)$lineData[12],
+                    ];
+                } else {
+                    // Log::warning('Song not found for title:', ['songTitle' => $songTitle]);
                 }
             }
+        }
 
-            // Insert chunk into the database
-            if (!empty($records)) {
-                SongDetail::insert($records);
-            }
+        // Insert chunk into the database
+        if (!empty($records)) {
+            SongDetail::insert($records);
         }
     }
+}
 
     
 
-    // Pre-Process
+    // AFTER PROCESS
     private function postProcess($tsvFile, $csvFile)
     {
         // Delete the TSV and CSV files after processing
@@ -339,32 +334,8 @@ class DetailLivewireConverter extends Component
         // Update progress and timer
         $this->progress = 0;
         $this->closeModal();
-        foreach (array_unique($this->tmpFiles) as $tmp) {
-            try { \Illuminate\Support\Facades\File::delete($tmp); } catch (\Throwable $e) {}
-        }
-        $this->tmpFiles = [];
         File::delete($tsvFile, $csvFile);
         // set_time_limit(60);
-    }
-
-    private function convertCsvToStandardTsv(string $csvFilePath): string
-    {
-        $tsvFilePath = preg_replace('/\.csv$/i', '.tsv', $csvFilePath);
-
-        $pythonScriptPath = base_path('scripts/convert_csv_to_standard_tsv.py');
-        $venvPythonPath   = '/home/ubuntu/myenv/bin/python';
-
-        $cmd = escapeshellcmd("{$venvPythonPath} {$pythonScriptPath} {$csvFilePath} {$tsvFilePath}");
-        exec($cmd . ' 2>&1', $output, $status);
-
-        if ($status !== 0 || !file_exists($tsvFilePath)) {
-            throw new \Exception('CSV → standardized TSV conversion failed.');
-        }
-
-        $this->tmpFiles[] = $csvFilePath;
-        $this->tmpFiles[] = $tsvFilePath;
-
-        return $tsvFilePath;
     }
     
     private function convertTsvToCsv($tsvFilePath)
