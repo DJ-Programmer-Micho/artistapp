@@ -189,7 +189,7 @@ class DetailLivewire extends Component
 
             // Titles from file (column index 4 in the standardized CSV)
             $fileSongs = collect($fileContents)->map(function ($line) {
-                $lineData = str_getcsv($line);   // <-- safer than trim(...,'"')
+                $lineData = str_getcsv(trim($line, '"'));   // <-- safer than trim(...,'"')
                 return $lineData[4] ?? null;
             })->filter()->unique();
 
