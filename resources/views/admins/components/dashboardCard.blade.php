@@ -9,7 +9,7 @@
                                 {{__('Total Earning (Store - Exact)')}}
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gary-200">
-                                $ {{$cleanEarning}}
+                                $ {{$cleanEarning / app('deduct')}}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -30,7 +30,7 @@
                                 {{__('Total Earning (Store - Calculated)')}}
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gary-200">
-                                $ {{$cleanEarning / app('deduct')}}
+                                $ {{$cleanEarning}}
                             </div>
                         </div>
                         <div class="col-auto">
