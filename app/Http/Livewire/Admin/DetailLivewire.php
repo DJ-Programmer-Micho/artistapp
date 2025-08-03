@@ -293,8 +293,8 @@ class DetailLivewire extends Component
 
             foreach ($chunk as $line) {
                 // Parse each line of the file
-                // $lineData = str_getcsv(trim($line, '"')); // For Linux OS
-                $lineData = str_getcsv($line);
+                // $lineData = str_getcsv($line);
+                $lineData = str_getcsv(trim($line, '"')); // For Linux OS
                 if (count($lineData) === 13) {
                     // Extract song title from the file
                     $songTitle = trim($lineData[4]); // Ensure trimming to match titles precisely
