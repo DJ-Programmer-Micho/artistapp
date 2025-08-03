@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class DetailLivewireConverter extends Component
+class DetailLivewire extends Component
 {
     use WithPagination, WithFileUploads;
 
